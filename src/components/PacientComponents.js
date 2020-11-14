@@ -13,19 +13,24 @@ import { Toast } from 'primereact/toast';
 
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
+import { InputMask } from 'primereact/inputmask';
+
 
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 
 
-export default class App extends Component{
+export default class PacientComponents extends Component{
+
+
+  
   constructor(){
     super();
     this.state = {
       visible : false,
       persona: {
-        idPatient: null,
+        id: null,
         firstName: null,
         middleName: null,
         lastName: null,
@@ -41,6 +46,23 @@ export default class App extends Component{
 
       }
     };
+    this.state1 = {
+      selectedCity1: null,
+      selectedCity2: null,
+      selectedCountry: null
+      };
+    /////////////////
+    this.cities = [
+      { name: 'Masculino', code: 'M' },
+      { name: 'Femenino', code: 'F' },
+    
+    ];
+    ///////////////
+    
+      
+
+
+
     this.items = [
       {
         label : 'Nuevo',
@@ -58,6 +80,10 @@ export default class App extends Component{
         command : () => {this.delete()}
       }
     ];
+
+    /////////////
+    this.onCityChange = this.onCityChange.bind(this);
+    ////////////
    
     this.personaService = new PersonaService();
     this.save = this.save.bind(this);
@@ -69,6 +95,15 @@ export default class App extends Component{
     );
   }
 
+
+  //////////////
+  onCityChange(e) {
+    this.setState({ selectedCity1: e.value });
+}
+  //////////////
+  
+
+
   componentDidMount(){
     this.personaService.getAll().then(data => this.setState({personas: data}))
   }
@@ -78,7 +113,7 @@ export default class App extends Component{
       this.setState({
         visible : false,
         persona: {
-          idPatient: null,
+          id: null,
           firstName: null,
           middleName: null,
           lastName: null,
@@ -99,7 +134,7 @@ export default class App extends Component{
 
   delete() {
     if(window.confirm("¿Realmente desea eliminar el registro?")) {
-      this.personaService.delete(this.state.selectedPersona.idPatient).then(data => {   
+      this.personaService.delete(this.state.selectedPersona.id).then(data => {   
       this.toast.show({severity: 'success', summary: 'Atención!', detail: 'Se eliminó el registro correctamente.'});
         this.personaService.getAll().then(data => this.setState({personas: data}));
       });
@@ -113,7 +148,7 @@ export default class App extends Component{
         <br/>
         <Panel header="React CRUD App">
             <DataTable value={this.state.personas} paginator={true} rows="4" selectionMode="single" selection={this.state.selectedPersona} onSelectionChange={e => this.setState({selectedPersona: e.value})}>
-              <Column field="idPatient" header="ID"></Column>
+              <Column field="id" header="ID"></Column>
               <Column field="firstName" header="Nombre"></Column>
               <Column field="middleName" header="Nombre2"></Column>
               <Column field="lastName" header="Primer Apellido"></Column>
@@ -251,24 +286,55 @@ export default class App extends Component{
                         return { persona };
                     })}
                   } />
+
+
+<Dropdown value={this.state.selectedCity1} options={this.cities} id="gender" onChange={(this.onCityChange),
+
+                  (e) => {
+                    let val = e.target.value.code;
+                    this.setState(prevState => {
+                        let persona = Object.assign({}, prevState.persona);
+                        persona.gender = val
+
+                        return { persona };
+                    })}
+
+            } optionLabel="name" placeholder="Select gender" />
+
                 <label htmlFor="gender">Genero</label>
               </span>
 
               
               <br/>
               <span className="p-float-label">
-                <InputText value={this.state.persona.birthdate} style={{width : '100%'}} id="birthdate" onChange={(e) => {
-                    let val = e.target.value;
-                    this.setState(prevState => {
-                        let persona = Object.assign({}, prevState.persona);
-                        persona.birthdate = val
 
-                        return { persona };
-                    })}
-                  } />
+
+                <label htmlFor=""></label>
+                <InputMask id="date" mask="9999-99-99" value={this.state.persona.birthdate} placeholder="9999-99-99" 
+                slotChar="yyyy-dd-mm" onChange={(e) => {
+                  let val = e.target.value;
+                  this.setState(prevState => {
+                      let persona = Object.assign({}, prevState.persona);
+                      persona.birthdate = val
+
+                      return { persona };
+                  })}
+                }>
+
+                </InputMask>
+
+
+
                 <label htmlFor="birthdate">Fecha Nacimiento</label>
               </span>
 
+              <div className="p-field p-col-12 p-md-4">
+                            <label htmlFor="date">Date</label>
+                            <InputMask id="date" mask="9999-99-99" value={this.state.val3} placeholder="9999-99-99" slotChar="yyyy-dd-mm" onChange={(e) => this.setState({val3: e.value})}></InputMask>
+              </div>
+              
+             
+                  
 
             </form>
         </Dialog>
@@ -282,7 +348,7 @@ export default class App extends Component{
     this.setState({
       visible : true,
       persona : {
-        idPatient: null,
+        id: null,
         firstName: null,
         middleName: null,
         lastName: null,
@@ -309,7 +375,7 @@ export default class App extends Component{
         direccion: this.state.selectedPersona.direccion,
         telefono : this.state.selectedPersona.telefono*/
 
-        idPatient: this.state.selectedPersona.idPatient,
+        id: this.state.selectedPersona.id,
         firstName: this.state.selectedPersona.firstName,
         middleName: this.state.selectedPersona.middleName,
         lastName: this.state.selectedPersona.lastName,

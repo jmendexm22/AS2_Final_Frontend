@@ -19,7 +19,7 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 
 
-export default class DoctorEntity extends Component{
+export default class DoctorComponents extends Component{
   constructor(){
     super();
     this.state = {

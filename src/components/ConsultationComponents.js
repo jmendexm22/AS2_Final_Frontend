@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 //import './App.css';
 import { ConsulService } from '../service/ConsulService';
+import { DoctorService } from '../service/DoctorService';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import {Panel} from 'primereact/panel';
@@ -20,33 +21,47 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import axios from 'axios';
+import { AutoComplete } from 'primereact/autocomplete';
 
 
 
+export default class ConsultationComponents extends Component{
 
-export default class ConsultationEntity extends Component{
+ 
+
   constructor(){
     super();
     this.state = {
       visible : false,
       consulta: {
 
-        idConsultation: null,
-        consultationDate: null,
+        id: null,
+        patientId: null,
+        doctorId: null,
+        complaints: null,
         diagnosis: null,
         treatment: null,
-        observations: null,
-        complaints: null,
-        otherDetails: null,
-        nextVisit: null,
-        idDoctor: null,
-         idPatient : null
-        ///////////////////////////
-
-        
-      }
+        dateRecorded: null,
+        tbPrescription: null
+       
+        //////////////////////////
       
+    }
     };
+
+    this.state1 = {
+      countries: [],
+      selectedCountry1: null,
+      selectedCountry2: null,
+      selectedCountries: null,
+      filteredCountries: null
+  };
+    
+   
+
+
     this.items = [
       {
         label : 'Nuevo',
@@ -65,8 +80,18 @@ export default class ConsultationEntity extends Component{
       }
     ];
    
+///////////////
+this.searchCountry = this.searchCountry.bind(this);
+///this.itemTemplate = this.itemTemplate.bind(this);
+///////////////////////
+
+
+
     this.consultaService = new ConsulService();
+    this.DoctorService = new DoctorService();
     
+    
+
     
     this.save = this.save.bind(this);
     this.delete = this.delete.bind(this);
@@ -77,11 +102,50 @@ export default class ConsultationEntity extends Component{
     );
   }
 
+  state1={
+    ciudades:[]
+  }
+
+  
+
   componentDidMount(){
-    this.consultaService.getAll().then(data => this.setState({consultas: data})) 
+    this.consultaService.getAll().then(data => this.setState({consultas: data}));
+    //////
+    this.DoctorService.getAll().then(data => this.setState({countries:data}));
+    ////
+    /*
+    axios
+    .get("http://localhost:8080/api/v1/doctors")
+    .then((response) =>{
+      console.log(response);
+      this.setState({ciudades: response.data})
+    })
+    .catch((error)=>{
+      console.log(error);
+    });
+  */
     
   }
 
+  ///////////////////////
+  searchCountry(event) {
+    setTimeout(() => {
+        let filteredCountries;
+        if (!event.query.trim().length) {
+            filteredCountries = [...this.state.countries];
+        }
+        else {
+            filteredCountries = this.state.countries.filter((country) => {
+                return country.firstName.toLowerCase().startsWith(event.query.toLowerCase());
+            });
+        }
+
+        this.setState({ filteredCountries });
+    }, 250);
+}
+
+
+  //////////////////
  
   save() {
     this.consultaService.save(this.state.consulta).then(data => {
@@ -89,16 +153,14 @@ export default class ConsultationEntity extends Component{
         visible : false,
         consulta: {
           
-          idConsultation: null,
-         consultationDate: null,
+          id: null,
+          patientId: null,
+          doctorId: null,
+          complaints: null,
           diagnosis: null,
           treatment: null,
-          observations: null,
-          complaints: null,
-          otherDetails: null,
-          nextVisit: null,
-          idDoctor: null,
-          idPatient : null
+          dateRecorded: null,
+          tbPrescription: null
 
 //////////////////////////////////////////
           
@@ -130,14 +192,14 @@ export default class ConsultationEntity extends Component{
         <br/>
         <Panel header="React CRUD Consultas">
             <DataTable value={this.state.consultas} paginator={true} rows="4" selectionMode="single" selection={this.state.selectedConsulta} onSelectionChange={e => this.setState({selectedConsulta: e.value})}>
-              <Column field="idConsultation" header="ID_consulta" ></Column>
-              <Column field="consultationDate" header="Fecha de consulta" style={{width:'6%'}} ></Column>
-              <Column field="diagnosis" header="Diagnostico"></Column>
-              <Column field="treatment" header="Tratamiento"></Column>
-              <Column field="observations" header="Observacion"></Column>
-              <Column field="complaints" header="Quejas"></Column>
-              <Column field="otherDetails" header="Otros Detalles"></Column>
-              <Column field="nextVisit" header="Siguientes Visitas"  style={{width:'6%'}}></Column>
+              <Column field="id" header="ID_consulta" ></Column>
+              <Column field="patientId" header="Fecha de consulta" style={{width:'6%'}} ></Column>
+              <Column field="doctorId" header="Diagnostico"></Column>
+              <Column field="complaints" header="Tratamiento"></Column>
+              <Column field="diagnosis" header="Observacion"></Column>
+              <Column field="treatment" header="Quejas"></Column>
+              <Column field="dateRecorded" header="Otros Detalles"></Column>
+              <Column field="tbPrescription" header="Siguientes Visitas"  style={{width:'6%'}}></Column>
               
               
               <Column field="idDoctor.firstName" header="Nombre Doctor"></Column>
@@ -176,16 +238,16 @@ export default class ConsultationEntity extends Component{
 
               <div>
               <span className="p-float-label">
-                <InputText value={this.state.consulta.consultationDate} style={{width : '100%'}} id="consultationDate" onChange={(e) => {
+                <InputText value={this.state.consulta.patientId} style={{width : '100%'}} id="patientId" onChange={(e) => {
                     let val = e.target.value;
                     this.setState(prevState => {
                         let consulta = Object.assign({}, prevState.consulta);
-                        consulta.consultationDate = val;
+                        consulta.patientId = val;
 
                         return { consulta };
                     })}
                   } />
-                <label htmlFor="consultationDate">Fecha consulta</label>
+                <label htmlFor="patientId">Fecha consulta</label>
               </span>
               <br/>
               <span className="p-float-label">
@@ -295,6 +357,26 @@ export default class ConsultationEntity extends Component{
               </span>
               
               
+              <span className="p-float-label">
+              <div className="card">
+                <h5>Basic</h5>
+                <AutoComplete value={this.state.selectedCountry1} suggestions={this.state.filteredCountries} completeMethod={this.searchCountry} field="firstName" onChange={(e) => this.setState({ selectedCountry1: e.value })} />
+
+                <h5>Dropdown and Templating</h5>
+                <AutoComplete value={this.state.selectedCountry2} suggestions={this.state.filteredCountries} completeMethod={this.searchCountry} field="firstName" dropdown itemTemplate={this.itemTemplate} onChange={(e) => this.setState({ selectedCountry2: e.value })} />
+
+                <h5>Multiple</h5>
+                <span className="p-fluid">
+                    <AutoComplete value={this.state.selectedCountries} suggestions={this.state.filteredCountries} completeMethod={this.searchCountry} field="firstName" multiple onChange={(e) => this.setState({ selectedCountries: e.value })} />
+                </span>
+            </div>
+              </span>
+              
+              
+               
+
+           
+              
             
               </div>
               <br/>
@@ -313,16 +395,14 @@ export default class ConsultationEntity extends Component{
       visible : true,
       consulta : {
         
-        idConsultation: null,
-        consultationDate: null,
-        diagnosis: null,
-        treatment: null,
-        observations: null,
-        complaints: null,
-        otherDetails: null,
-        nextVisit: null,
-        idDoctor: null,
-        idPatient : null
+          id: null,
+          patientId: null,
+          doctorId: null,
+          complaints: null,
+          diagnosis: null,
+          treatment: null,
+          dateRecorded: null,
+          tbPrescription: null
         
        
          ///////////////////////////
@@ -336,16 +416,14 @@ export default class ConsultationEntity extends Component{
       visible : true,
       consulta : {
    
-        idConsultation: this.state.selectedConsulta.idConsultation,
-        consultationDate: this.state.selectedConsulta.consultationDate,
+        id: this.state.selectedConsulta.id,
+        patientId: this.state.selectedConsulta.patientId,
+        doctorId: this.state.selectedConsulta.doctorId,
+        complaints: this.state.selectedConsulta.complaints,
         diagnosis: this.state.selectedConsulta.diagnosis,
         treatment: this.state.selectedConsulta.treatment,
-        observations: this.state.selectedConsulta.observations,
-        complaints: this.state.selectedConsulta.complaints,
-        otherDetails: this.state.selectedConsulta.otherDetails,
-        nextVisit: this.state.selectedConsulta.nextVisit,
-        idDoctor: this.state.selectedConsulta.idDoctor.idDoctor,
-        idPatient : this.state.selectedConsulta.idPatient.idPatient
+        dateRecorded: this.state.selectedConsulta.dateRecorded,
+        tbPrescription: this.state.selectedConsulta.tbPrescription
        
         //////////////////////
        //pasfirstName: this.state.selectedPersona.pasfirstName,
