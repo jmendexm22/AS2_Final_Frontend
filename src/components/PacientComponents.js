@@ -148,8 +148,8 @@ export default class PacientComponents extends Component{
         <Panel header="Pacientes">
             <DataTable value={this.state.personas} paginator={true} rows="4" selectionMode="single" selection={this.state.selectedPersona} onSelectionChange={e => this.setState({selectedPersona: e.value})}>
               <Column field="id" header="ID"></Column>
-              <Column field="firstName" header="Nombre"></Column>
-              <Column field="middleName" header="Nombre2"></Column>
+              <Column field="firstName" header="Primer Nombre"></Column>
+              <Column field="middleName" header="Segundo Nombre"></Column>
               <Column field="lastName" header="Primer Apellido"></Column>
               <Column field="maidenName" header="Segundo Apellido"></Column>
               <Column field="address1" header="Direccion1"></Column>
@@ -163,7 +163,7 @@ export default class PacientComponents extends Component{
  
             </DataTable>
         </Panel>
-        <Dialog header="New Patient" visible={this.state.visible} style={{width: '400px'}} footer={this.footer} modal={true} onHide={() => this.setState({visible: false})}>
+        <Dialog header="Nuevo Paciente" visible={this.state.visible} style={{width: '400px'}} footer={this.footer} modal={true} onHide={() => this.setState({visible: false})}>
             <form id="persona-form">
               <span className="p-float-label">
                 <InputText value={this.state.persona.firstName} style={{width : '100%'}} id="firstName" onChange={(e) => {
@@ -307,7 +307,7 @@ export default class PacientComponents extends Component{
               <br/>
               <span className="p-float-label">
 
-
+              <label htmlFor="birthdate">Fecha Nacimiento</label>
                 <label htmlFor=""></label>
                 <InputMask id="date" mask="9999-99-99" value={this.state.persona.birthdate} placeholder="9999-99-99" 
                 slotChar="yyyy-mm-dd" onChange={(e) => {
@@ -324,7 +324,7 @@ export default class PacientComponents extends Component{
 
 
 
-                <label htmlFor="birthdate">Fecha Nacimiento</label>
+                
               </span>
 
     

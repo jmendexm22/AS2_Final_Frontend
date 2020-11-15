@@ -147,7 +147,7 @@ onActivoChange(e) {
       <div style={{width:'100%', margin: '0 auto', marginTop: '20px'}}>
         <Menubar model={this.items}/>
         <br/>
-        <Panel header="React CRUD Doctor">
+        <Panel header="Doctores">
             <DataTable value={this.state.doctores} paginator={true} rows="4" selectionMode="single" selection={this.state.selectedDoctor} onSelectionChange={e => this.setState({selectedDoctor: e.value})}>
               <Column field="id" header="ID"></Column>
               <Column field="firstName" header="Nombre"></Column>
@@ -163,7 +163,7 @@ onActivoChange(e) {
            
             </DataTable>
         </Panel>
-        <Dialog header="Crear Doctor33" visible={this.state.visible} style={{width: '500px'}} footer={this.footer} modal={true} onHide={() => this.setState({visible: false})}>
+        <Dialog header="Nuevo Doctor" visible={this.state.visible} style={{width: '500px'}} footer={this.footer} modal={true} onHide={() => this.setState({visible: false})}>
             <form id="persona-form">
               <span className="p-float-label">
                 <InputText value={this.state.doctor.firstName} style={{width : '100%'}} id="firstName" onChange={(e) => {

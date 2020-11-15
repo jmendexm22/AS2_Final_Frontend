@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export class PersonaService {
-    baseUrl = "http://localhost:8080/api/v1/";
+    baseUrl = "http://157.230.5.231:8080/as2final-backend-0.0.1-SNAPSHOT/api/v1/";
 
     getAll(){
         return axios.get(this.baseUrl + "patients").then(res => res.data);
