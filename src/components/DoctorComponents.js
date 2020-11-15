@@ -25,7 +25,7 @@ export default class DoctorComponents extends Component{
     this.state = {
       visible : false,
       doctor: {
-        idDoctors: null,
+        id: null,
         firstName: null,
         middleName: null,
         lastName: null,
@@ -43,6 +43,26 @@ export default class DoctorComponents extends Component{
 
       }
     };
+
+    this.state1 = {
+        selectedGenero1: null,
+    };
+
+    this.state2 = {
+      selectedActivo: null,
+    };
+
+    this.generos = [
+        {name: 'Masculino', code: 'M'},
+        {name: 'Femenico', code: 'F'},
+    ];
+
+    this.estados = [
+      {name: 'Activo', code: 'true'},
+      {name: 'No Activo', code: 'false'},
+  ];
+
+
     this.items = [
       {
         label : 'Nuevo',
@@ -62,8 +82,8 @@ export default class DoctorComponents extends Component{
     ];
    
     
-
-   
+    this.onCityChange = this.onGeneroChange.bind(this);
+    this.onActivoChange = this.onActivoChange.bind(this);
   
 
     this.doctorService = new DoctorService();
@@ -76,6 +96,15 @@ export default class DoctorComponents extends Component{
     );
   }
 
+  onGeneroChange(e) {
+    this.setState({ selectedGenero1: e.value });
+}
+onActivoChange(e) {
+  this.setState({ selectedActivo: e.value });
+}
+
+
+
   componentDidMount(){
     this.doctorService.getAll().then(data => this.setState({doctores: data}))
   }
@@ -85,7 +114,7 @@ export default class DoctorComponents extends Component{
       this.setState({
         visible : false,
         doctor: {
-          idDoctor: null,
+          id: null,
           firstName: null,
           middleName: null,
           lastName: null,
@@ -95,9 +124,7 @@ export default class DoctorComponents extends Component{
           gender: null,
           birthdate: null,
           collegiateNumber: null,
-          isActive: null,
-          phone1: null,
-          phone2: null
+          isActive: null
         }
       });
      
@@ -122,7 +149,7 @@ export default class DoctorComponents extends Component{
         <br/>
         <Panel header="React CRUD Doctor">
             <DataTable value={this.state.doctores} paginator={true} rows="4" selectionMode="single" selection={this.state.selectedDoctor} onSelectionChange={e => this.setState({selectedDoctor: e.value})}>
-              <Column field="idDoctor" header="ID"></Column>
+              <Column field="id" header="ID"></Column>
               <Column field="firstName" header="Nombre"></Column>
               <Column field="middleName" header="Nombre2"></Column>
               <Column field="lastName" header="Primer Apellido"></Column>
@@ -133,8 +160,7 @@ export default class DoctorComponents extends Component{
               <Column field="birthdate" header="Fecha" style={{width:'20%', margin: '0 auto', marginTop: '0 auto'}}></Column>
               <Column field="collegiateNumber" header="numero colegiado"></Column>
               <Column field="isActive" header="Activo"></Column>
-              <Column field="phone1" header="Telefono1"></Column>
-              <Column field="phone2" header="Telefono2"></Column>
+           
             </DataTable>
         </Panel>
         <Dialog header="Crear Doctor33" visible={this.state.visible} style={{width: '500px'}} footer={this.footer} modal={true} onHide={() => this.setState({visible: false})}>
@@ -166,7 +192,7 @@ export default class DoctorComponents extends Component{
               </span>
               <br/>
               <span className="p-float-label">
-                <InputText value={this.state.doctor.itemslastName} style={{width : '100%'}} id="lastName" onChange={(e) => {
+                <InputText value={this.state.doctor.lastName} style={{width : '100%'}} id="lastName" onChange={(e) => {
                     let val = e.target.value;
                     this.setState(prevState => {
                         let doctor = Object.assign({}, prevState.doctor);
@@ -230,6 +256,20 @@ export default class DoctorComponents extends Component{
                     })}
                   } />
                 <label htmlFor="gender">Genero</label>
+
+                <Dropdown value={this.state.selectedGenero1} options={this.generos} id="gender" onChange={(this.onGeneroChange),
+                      (e) => {
+                      let val = e.target.value.code;
+                        this.setState(prevState => {
+                        let doctor = Object.assign({}, prevState.doctor);
+                        doctor.gender = val
+
+                        return { doctor };
+                      })}
+
+                  } optionLabel="name" placeholder="Select gender" />
+
+                      
               </span>
               <br/>
               <span className="p-float-label">
@@ -275,33 +315,17 @@ export default class DoctorComponents extends Component{
                 <label htmlFor="isActive">Estado</label>
               </span>
 
+              <Dropdown value={this.state2.selectedActivo} options={this.estados} id="isActive" onChange={(this.onActivoChange),
+
+                  (e) => {
+                    let val = e.target.value.code;
+                      this.setState(prevState => {
+                      let doctor = Object.assign({}, prevState.doctor);
+                      doctor.isActive = val
+                    return { doctor };
+                     })}
+                } optionLabel="isActive" placeholder="Selecion Estado" />
               <br/>
-              <span className="p-float-label">
-                <InputText value={this.state.doctor.phone1} style={{width : '100%'}} id="phone1" onChange={(e) => {
-                    let val = e.target.value;
-                    this.setState(prevState => {
-                        let doctor = Object.assign({}, prevState.doctor);
-                        doctor.phone1 = val
-
-                        return { doctor };
-                    })}
-                  } />
-                <label htmlFor="phone1">Telefono1</label>
-              </span>
-
-              <br/>
-              <span className="p-float-label">
-                <InputText value={this.state.doctor.phone2} style={{width : '100%'}} id="phone2" onChange={(e) => {
-                    let val = e.target.value;
-                    this.setState(prevState => {
-                        let doctor = Object.assign({}, prevState.doctor);
-                        doctor.phone2 = val
-
-                        return { doctor };
-                    })}
-                  } />
-                <label htmlFor="phone2">Telefono2</label>
-              </span>
 
 
             </form>
@@ -316,7 +340,7 @@ export default class DoctorComponents extends Component{
     this.setState({
       visible : true,
       doctor : {
-        idDoctor: null,
+        id: null,
         firstName: null,
         middleName: null,
         lastName: null,
@@ -326,9 +350,7 @@ export default class DoctorComponents extends Component{
         gender: null,
         birthdate: null,
         collegiateNumber: null,
-        isActive: null,
-        phone1: null,
-        phone2: null
+        isActive: null
       }
     });
    // document.getElementById('persona-form').reset();
@@ -338,7 +360,7 @@ export default class DoctorComponents extends Component{
     this.setState({
       visible : true,
       doctor : {
-        idDoctor: this.state.selectedDoctor.idDoctor,
+        id: this.state.selectedDoctor.id,
         firstName: this.state.selectedDoctor.firstName,
         middleName: this.state.selectedDoctor.middleName,
         lastName: this.state.selectedDoctor.lastName,
@@ -348,9 +370,7 @@ export default class DoctorComponents extends Component{
         gender: this.state.selectedDoctor.gender,
         birthdate: this.state.selectedDoctor.birthdate,
         collegiateNumber:this.state.selectedDoctor.collegiateNumber,
-        isActive: this.state.selectedDoctor.isActive,
-        phone1: this.state.selectedDoctor.phone1,
-        phone2: this.state.selectedDoctor.phone2
+        isActive: this.state.selectedDoctor.isActive
         
       }
     })

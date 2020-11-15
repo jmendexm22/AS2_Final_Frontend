@@ -20,8 +20,12 @@ import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import moment from 'moment';
-import 'bootstrap/dist/css/bootstrap.css';
-import "bootstrap/dist/css/bootstrap.min.css";
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import $ from 'jquery';
+import Popper from 'popper.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 import axios from 'axios';
 import { AutoComplete } from 'primereact/autocomplete';
 
@@ -33,6 +37,9 @@ export default class ConsultationComponents extends Component{
 
   constructor(){
     super();
+
+    
+
     this.state = {
       visible : false,
       consulta: {
@@ -58,6 +65,8 @@ export default class ConsultationComponents extends Component{
       selectedCountries: null,
       filteredCountries: null
   };
+
+  
     
    
 
@@ -102,28 +111,25 @@ this.searchCountry = this.searchCountry.bind(this);
     );
   }
 
-  state1={
-    ciudades:[]
-  }
 
   
 
   componentDidMount(){
     this.consultaService.getAll().then(data => this.setState({consultas: data}));
     //////
-    this.DoctorService.getAll().then(data => this.setState({countries:data}));
+    //this.DoctorService.getAll().then(data => this.setState({countries:data}));
     ////
-    /*
+    
     axios
     .get("http://localhost:8080/api/v1/doctors")
     .then((response) =>{
       console.log(response);
-      this.setState({ciudades: response.data})
+      this.setState({countries: response.data})
     })
     .catch((error)=>{
       console.log(error);
     });
-  */
+  
     
   }
 
@@ -136,7 +142,7 @@ this.searchCountry = this.searchCountry.bind(this);
         }
         else {
             filteredCountries = this.state.countries.filter((country) => {
-                return country.firstName.toLowerCase().startsWith(event.query.toLowerCase());
+                return country.id.toLowerCase().startsWith(event.query.toLowerCase());
             });
         }
 
@@ -182,7 +188,9 @@ this.searchCountry = this.searchCountry.bind(this);
   }
 
   
-
+  state2 = {
+    ciudades:[]
+  };
 
   
   render(){
@@ -190,41 +198,41 @@ this.searchCountry = this.searchCountry.bind(this);
       <div style={{width:'300%', margin: '0 auto', marginTop: '0 auto'}}>
         <Menubar model={this.items}/>
         <br/>
-        <Panel header="React CRUD Consultas">
+        <Panel header="Consultas">
             <DataTable value={this.state.consultas} paginator={true} rows="4" selectionMode="single" selection={this.state.selectedConsulta} onSelectionChange={e => this.setState({selectedConsulta: e.value})}>
-              <Column field="id" header="ID_consulta" ></Column>
-              <Column field="patientId" header="Fecha de consulta" style={{width:'6%'}} ></Column>
-              <Column field="doctorId" header="Diagnostico"></Column>
-              <Column field="complaints" header="Tratamiento"></Column>
-              <Column field="diagnosis" header="Observacion"></Column>
-              <Column field="treatment" header="Quejas"></Column>
-              <Column field="dateRecorded" header="Otros Detalles"></Column>
-              <Column field="tbPrescription" header="Siguientes Visitas"  style={{width:'6%'}}></Column>
+              <Column field="id" header="Id_consulta" ></Column>
+              <Column field="patientId" header="patientId " style={{width:'6%'}} ></Column>
+              <Column field="doctorId" header="doctorId"></Column>
+              <Column field="complaints" header="complaints"></Column>
+              <Column field="diagnosis" header="diagnosis"></Column>
+              <Column field="treatment" header="treatment"></Column>
+              <Column field="dateRecorded" header="dateRecorded Detalles"></Column>
+              <Column field="tbPrescription" header="tbPrescription"  style={{width:'6%'}}></Column>
               
               
-              <Column field="idDoctor.firstName" header="Nombre Doctor"></Column>
-              <Column field="idDoctor.middleName" header="Segundo Nombre Doctor"></Column>
-              <Column field="idDoctor.lastName" header="Apellido Doctor"></Column>
-              <Column field="idDoctor.maidenName" header="Segundo Apellido Doctor"></Column>
-              <Column field="idDoctor.address1" header="Direccion"></Column>
-              <Column field="idDoctor.address2" header="Segundo Direccion"></Column>
-              <Column field="idDoctor.gender" header="Genero"></Column>
-              <Column field="idDoctor.birthdate" header="Fecha Nacimiento"  style={{width:'6%'}}></Column>
-              <Column field="idDoctor.collegiateNumber" header="Colegiado"></Column>
-              <Column field="idDoctor.isActive" header="Estado"></Column>
-              <Column field="idDoctor.phone1" header="Telefono"></Column>
-              <Column field="idDoctor.phone2" header="Telefono2"></Column>
+              <Column field="tbDoctor.id" header="Nombre Doctor"></Column>
+              <Column field="tbDoctor.firstName" header="Segundo Nombre Doctor"></Column>
+              <Column field="tbDoctor.middleName" header="Apellido Doctor"></Column>
+              <Column field="tbDoctor.lastName" header="Segundo Apellido Doctor"></Column>
+              <Column field="tbDoctor.maidenName" header="Direccion"></Column>
+              <Column field="tbDoctor.address1" header="Segundo Direccion"></Column>
+              <Column field="tbDoctor.address1" header="Genero"></Column>
+              <Column field="tbDoctor.gender" header="Fecha Nacimiento"  style={{width:'6%'}}></Column>
+              <Column field="tbDoctor.birthdate" header="Colegiado"></Column>
+              <Column field="tbDoctor.collegiateNumber" header="Estado"></Column>
+              <Column field="tbDoctor.collegiateNumber" header="Telefono"></Column>
+             
               
-              <Column field="idPatient.firstName" header="Nombre Paciente"></Column>
-              <Column field="idPatient.middleName" header="Segundo Nombre Paciente"></Column>
-              <Column field="idPatient.lastName" header="Apellido Doctor"></Column>
-              <Column field="idPatient.maidenName" header="Segundo Apellido Paciente"></Column>
-              <Column field="idPatient.address1" header="Direccion Paciente"></Column>
-              <Column field="idPatient.address2" header="Segundo Direccion paciente"></Column>
-              <Column field="idPatient.phone1" header="Telefono paciente"></Column>
-              <Column field="idPatient.phone2" header="Telefono2 paciente"></Column>
-              <Column field="idPatient.gender" header="Genero"></Column>
-              <Column field="idPatient.birthdate" header="Fecha Nacimiento"  style={{width:'6%'}}></Column>
+              <Column field="tbPatient.id" header="id Paciente"></Column>
+              <Column field="tbPatient.firstName" header="Segundo Nombre Paciente"></Column>
+              <Column field="tbPatient.middleName" header="Apellido Doctor"></Column>
+              <Column field="tbPatient.lastName" header="Segundo Apellido Paciente"></Column>
+              <Column field="tbPatient.maidenName" header="Direccion Paciente"></Column>
+              <Column field="tbPatient.address1" header="Segundo Direccion paciente"></Column>
+              <Column field="tbPatient.address1" header="Telefono paciente"></Column>
+              <Column field="tbPatient.phone1" header="Telefono2 paciente"></Column>
+              <Column field="tbPatient.phone1" header="Genero"></Column>
+              <Column field="tbPatient.phone1" header="Fecha Nacimiento"  style={{width:'6%'}}></Column>
             
            
               
@@ -247,48 +255,21 @@ this.searchCountry = this.searchCountry.bind(this);
                         return { consulta };
                     })}
                   } />
-                <label htmlFor="patientId">Fecha consulta</label>
+                <label htmlFor="patientId">patientId</label>
               </span>
               <br/>
               <span className="p-float-label">
-                <InputText value={this.state.consulta.diagnosis} style={{width : '100%'}} id="diagnosis" onChange={(e) => {
+                <InputText value={this.state.consulta.doctorId} style={{width : '100%'}} id="patientId" onChange={(e) => {
                     let val = e.target.value;
                     this.setState(prevState => {
                         let consulta = Object.assign({}, prevState.consulta);
-                        consulta.diagnosis = val;
+                        consulta.doctorId = val;
 
                         return { consulta };
                     })}
                   } />
-                <label htmlFor="diagnosis">Diagnostico</label>
+                <label htmlFor="diagnosis">patientId</label>
               </span>
-              <br/>
-              <span className="p-float-label">
-                <InputText value={this.state.consulta.treatment} style={{width : '100%'}} id="treatment" onChange={(e) => {
-                    let val = e.target.value;
-                    this.setState(prevState => {
-                        let consulta = Object.assign({}, prevState.consulta);
-                        consulta.treatment = val
-
-                        return { consulta };
-                    })}
-                  } />
-                <label htmlFor="treatment">Tratamiento</label>
-              </span>
-              <br/>
-              <span className="p-float-label">
-                <InputText value={this.state.consulta.observations} style={{width : '100%'}} id="observations" onChange={(e) => {
-                    let val = e.target.value;
-                    this.setState(prevState => {
-                        let consulta = Object.assign({}, prevState.consulta);
-                        consulta.observations = val
-
-                        return { consulta };
-                    })}
-                  } />
-                <label htmlFor="observations">Observaciones</label>
-              </span>
-
               <br/>
               <span className="p-float-label">
                 <InputText value={this.state.consulta.complaints} style={{width : '100%'}} id="complaints" onChange={(e) => {
@@ -300,34 +281,61 @@ this.searchCountry = this.searchCountry.bind(this);
                         return { consulta };
                     })}
                   } />
-                <label htmlFor="complaints">Quejas</label>
+                <label htmlFor="complaints">complaints</label>
               </span>
               <br/>
               <span className="p-float-label">
-                <InputText value={this.state.consulta.otherDetails} style={{width : '100%'}} id="otherDetails" onChange={(e) => {
+                <InputText value={this.state.consulta.diagnosis} style={{width : '100%'}} id="diagnosis" onChange={(e) => {
                     let val = e.target.value;
                     this.setState(prevState => {
                         let consulta = Object.assign({}, prevState.consulta);
-                        consulta.otherDetails = val
+                        consulta.diagnosis = val
 
                         return { consulta };
                     })}
                   } />
-                <label htmlFor="otherDetails">otros detalles</label>
+                <label htmlFor="diagnosis">diagnosis</label>
               </span>
 
               <br/>
               <span className="p-float-label">
-                <InputText value={this.state.consulta.nextVisit} style={{width : '100%'}} id="nextVisit" onChange={(e) => {
+                <InputText value={this.state.consulta.treatment} style={{width : '100%'}} id="treatment" onChange={(e) => {
                     let val = e.target.value;
                     this.setState(prevState => {
                         let consulta = Object.assign({}, prevState.consulta);
-                        consulta.nextVisit = val
+                        consulta.treatment = val
 
                         return { consulta };
                     })}
                   } />
-                <label htmlFor="nextVisit">Siguiente Visita</label>
+                <label htmlFor="treatment">treatment</label>
+              </span>
+              <br/>
+              <span className="p-float-label">
+                <InputText value={this.state.consulta.dateRecorded} style={{width : '100%'}} id="dateRecorded" onChange={(e) => {
+                    let val = e.target.value;
+                    this.setState(prevState => {
+                        let consulta = Object.assign({}, prevState.consulta);
+                        consulta.dateRecorded = val
+
+                        return { consulta };
+                    })}
+                  } />
+                <label htmlFor="dateRecorded">dateRecorded</label>
+              </span>
+
+              <br/>
+              <span className="p-float-label">
+                <InputText value={this.state.consulta.tbPrescription} style={{width : '100%'}} id="tbPrescription" onChange={(e) => {
+                    let val = e.target.value;
+                    this.setState(prevState => {
+                        let consulta = Object.assign({}, prevState.consulta);
+                        consulta.tbPrescription = val
+
+                        return { consulta };
+                    })}
+                  } />
+                <label htmlFor="tbPrescription"> tbPrescription</label>
               </span>
               <br/>
               <span className="p-float-label">
@@ -363,7 +371,9 @@ this.searchCountry = this.searchCountry.bind(this);
                 <AutoComplete value={this.state.selectedCountry1} suggestions={this.state.filteredCountries} completeMethod={this.searchCountry} field="firstName" onChange={(e) => this.setState({ selectedCountry1: e.value })} />
 
                 <h5>Dropdown and Templating</h5>
-                <AutoComplete value={this.state.selectedCountry2} suggestions={this.state.filteredCountries} completeMethod={this.searchCountry} field="firstName" dropdown itemTemplate={this.itemTemplate} onChange={(e) => this.setState({ selectedCountry2: e.value })} />
+                <AutoComplete value={this.state.selectedCountry2} suggestions={this.state.filteredCountries} completeMethod={this.searchCountry} field="firstName" dropdown itemTemplate={this.itemTemplate}  
+                onChange={(e) => this.setState({ selectedCountry1: e.value })}
+                />
 
                 <h5>Multiple</h5>
                 <span className="p-fluid">
@@ -371,9 +381,20 @@ this.searchCountry = this.searchCountry.bind(this);
                 </span>
             </div>
               </span>
+
+
+              <div>
+                  <div>
+                      <select name="ciudades" className="form-control">
+                        {
+                          this.state2.ciudades.map(elemento =>(
+                          <option key={elemento.id} value={elemento.id}>{elemento.idDoctor}</option>
+                          )
+                          )}
+                      </select>
+                  </div>
+              </div>
               
-              
-               
 
            
               
@@ -383,6 +404,8 @@ this.searchCountry = this.searchCountry.bind(this);
               <hr/>
               <hr/>
             </form>
+
+            
         </Dialog>
        
         <Toast ref={(el) => this.toast = el} />
@@ -441,3 +464,4 @@ this.searchCountry = this.searchCountry.bind(this);
     })
   }
 }
+

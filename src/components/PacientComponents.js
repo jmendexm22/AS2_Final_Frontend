@@ -47,12 +47,11 @@ export default class PacientComponents extends Component{
       }
     };
     this.state1 = {
-      selectedCity1: null,
-      selectedCity2: null,
-      selectedCountry: null
+      selectedGenero1: null,
+     
       };
     /////////////////
-    this.cities = [
+    this.generos = [
       { name: 'Masculino', code: 'M' },
       { name: 'Femenino', code: 'F' },
     
@@ -98,7 +97,7 @@ export default class PacientComponents extends Component{
 
   //////////////
   onCityChange(e) {
-    this.setState({ selectedCity1: e.value });
+    this.setState({ selectedGenero1: e.value });
 }
   //////////////
   
@@ -146,7 +145,7 @@ export default class PacientComponents extends Component{
       <div style={{width:'80%', margin: '0 auto', marginTop: '20px'}}>
         <Menubar model={this.items}/>
         <br/>
-        <Panel header="React CRUD App">
+        <Panel header="Pacientes">
             <DataTable value={this.state.personas} paginator={true} rows="4" selectionMode="single" selection={this.state.selectedPersona} onSelectionChange={e => this.setState({selectedPersona: e.value})}>
               <Column field="id" header="ID"></Column>
               <Column field="firstName" header="Nombre"></Column>
@@ -164,7 +163,7 @@ export default class PacientComponents extends Component{
  
             </DataTable>
         </Panel>
-        <Dialog header="Crear persona" visible={this.state.visible} style={{width: '400px'}} footer={this.footer} modal={true} onHide={() => this.setState({visible: false})}>
+        <Dialog header="New Patient" visible={this.state.visible} style={{width: '400px'}} footer={this.footer} modal={true} onHide={() => this.setState({visible: false})}>
             <form id="persona-form">
               <span className="p-float-label">
                 <InputText value={this.state.persona.firstName} style={{width : '100%'}} id="firstName" onChange={(e) => {
@@ -288,7 +287,7 @@ export default class PacientComponents extends Component{
                   } />
 
 
-<Dropdown value={this.state.selectedCity1} options={this.cities} id="gender" onChange={(this.onCityChange),
+<Dropdown value={this.state.selectedGenero1} options={this.generos} id="gender" onChange={(this.onCityChange),
 
                   (e) => {
                     let val = e.target.value.code;
@@ -311,7 +310,7 @@ export default class PacientComponents extends Component{
 
                 <label htmlFor=""></label>
                 <InputMask id="date" mask="9999-99-99" value={this.state.persona.birthdate} placeholder="9999-99-99" 
-                slotChar="yyyy-dd-mm" onChange={(e) => {
+                slotChar="yyyy-mm-dd" onChange={(e) => {
                   let val = e.target.value;
                   this.setState(prevState => {
                       let persona = Object.assign({}, prevState.persona);
@@ -328,10 +327,7 @@ export default class PacientComponents extends Component{
                 <label htmlFor="birthdate">Fecha Nacimiento</label>
               </span>
 
-              <div className="p-field p-col-12 p-md-4">
-                            <label htmlFor="date">Date</label>
-                            <InputMask id="date" mask="9999-99-99" value={this.state.val3} placeholder="9999-99-99" slotChar="yyyy-dd-mm" onChange={(e) => this.setState({val3: e.value})}></InputMask>
-              </div>
+    
               
              
                   
