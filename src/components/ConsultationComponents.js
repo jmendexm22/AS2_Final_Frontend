@@ -14,7 +14,7 @@ import { Toast } from 'primereact/toast';
 
 import { Dropdown } from 'primereact/dropdown';
 
-
+import { InputMask } from 'primereact/inputmask';
 
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -50,8 +50,7 @@ export default class ConsultationComponents extends Component{
         complaints: null,
         diagnosis: null,
         treatment: null,
-        dateRecorded: null,
-        tbPrescription: null
+        dateRecorded: null
        
         //////////////////////////
       
@@ -165,8 +164,8 @@ this.searchCountry = this.searchCountry.bind(this);
           complaints: null,
           diagnosis: null,
           treatment: null,
-          dateRecorded: null,
-          tbPrescription: null
+          dateRecorded: null
+         
 
 //////////////////////////////////////////
           
@@ -233,14 +232,8 @@ this.searchCountry = this.searchCountry.bind(this);
                         return { consulta };
                     })}
                   } />
-                <label htmlFor="patientId">patientId</label>
-                <h5>Basic</h5>
-                <AutoComplete value={this.state.selectedCountry1} suggestions={this.state.filteredCountries} completeMethod={this.searchCountry} field="id" onChange={(e) => this.setState({ selectedCountry1: e.value })} />
-
-                <h5>Dropdown and Templating</h5>
-                <AutoComplete value={this.state.selectedCountry2} suggestions={this.state.filteredCountries} completeMethod={this.searchCountry} field="firstName" dropdown itemTemplate={this.itemTemplate}  
-                onChange={(e) => this.setState({ selectedCountry1: e.value })}
-                />
+                <label htmlFor="patientId">Codigo Paciente</label>
+               
                 
               </span>
               <br/>
@@ -254,7 +247,7 @@ this.searchCountry = this.searchCountry.bind(this);
                         return { consulta };
                     })}
                   } />
-                <label htmlFor="diagnosis">patientId</label>
+                <label htmlFor="diagnosis">Codigo Doctor</label>
               </span>
               <br/>
               <span className="p-float-label">
@@ -267,7 +260,7 @@ this.searchCountry = this.searchCountry.bind(this);
                         return { consulta };
                     })}
                   } />
-                <label htmlFor="complaints">complaints</label>
+                <label htmlFor="complaints">Queja</label>
               </span>
               <br/>
               <span className="p-float-label">
@@ -280,7 +273,7 @@ this.searchCountry = this.searchCountry.bind(this);
                         return { consulta };
                     })}
                   } />
-                <label htmlFor="diagnosis">diagnosis</label>
+                <label htmlFor="diagnosis">diagnóstico</label>
               </span>
 
               <br/>
@@ -294,70 +287,32 @@ this.searchCountry = this.searchCountry.bind(this);
                         return { consulta };
                     })}
                   } />
-                <label htmlFor="treatment">treatment</label>
+                <label htmlFor="treatment">tratamiento</label>
               </span>
               <br/>
-              <span className="p-float-label">
-                <InputText value={this.state.consulta.dateRecorded} style={{width : '100%'}} id="dateRecorded" onChange={(e) => {
-                    let val = e.target.value;
-                    this.setState(prevState => {
-                        let consulta = Object.assign({}, prevState.consulta);
-                        consulta.dateRecorded = val
-
-                        return { consulta };
-                    })}
-                  } />
-                <label htmlFor="dateRecorded">dateRecorded</label>
-              </span>
-
-              <br/>
-              <span className="p-float-label">
-                <InputText value={this.state.consulta.tbPrescription} style={{width : '100%'}} id="tbPrescription" onChange={(e) => {
-                    let val = e.target.value;
-                    this.setState(prevState => {
-                        let consulta = Object.assign({}, prevState.consulta);
-                        consulta.tbPrescription = val
-
-                        return { consulta };
-                    })}
-                  } />
-                <label htmlFor="tbPrescription"> tbPrescription</label>
-              </span>
-              <br/>
-              <span className="p-float-label">
-                <InputText value={this.state.consulta.idDoctor} style={{width : '100%'}} id="idDoctor" onChange={(e) => {
-                    let val = e.target.value;
-                    this.setState(prevState => {
-                        let consulta = Object.assign({}, prevState.consulta);
-                        consulta.idDoctor = parseInt(val);
-
-                        return { consulta };
-                    })}
-                  } />
-                <label htmlFor="idDoctor">id doctor</label>
-              </span>
-              <br/>
-              <span className="p-float-label">
-                <InputText value={this.state.consulta.idPatient} style={{width : '100%'}} id="idPatient" onChange={(e) => {
-                    let val = e.target.value;
-                    this.setState(prevState => {
-                        let consulta = Object.assign({}, prevState.consulta);
-                        consulta.idPatient = parseInt(val) ;
-
-                        return { consulta };
-                    })}
-                  } />
-                <label htmlFor="idPatient">id paciente</label>
-              </span>
-              
               
               <span className="p-float-label">
-              <div className="">
-               
-               
+              
+<label htmlFor=""></label>
+<InputMask id="date" mask="9999-99-99" value={this.state.consulta.dateRecorded} placeholder="9999-99-99" 
+slotChar="yyyy-mm-dd" onChange={(e) => {
+  let val = e.target.value;
+  this.setState(prevState => {
+      let consulta = Object.assign({}, prevState.consulta);
+      consulta.dateRecorded = val
 
-            </div>
-              </span>            
+      return { consulta };
+  })}
+}>
+  
+</InputMask>
+
+<label htmlFor="dateRecorded">fecha de grabación</label>
+
+
+</span>
+              
+                         
               </div>
               <br/>
               <hr/>
@@ -383,8 +338,8 @@ this.searchCountry = this.searchCountry.bind(this);
           complaints: null,
           diagnosis: null,
           treatment: null,
-          dateRecorded: null,
-          tbPrescription: null
+          dateRecorded: null
+          
         
        
          ///////////////////////////
@@ -404,8 +359,8 @@ this.searchCountry = this.searchCountry.bind(this);
         complaints: this.state.selectedConsulta.complaints,
         diagnosis: this.state.selectedConsulta.diagnosis,
         treatment: this.state.selectedConsulta.treatment,
-        dateRecorded: this.state.selectedConsulta.dateRecorded,
-        tbPrescription: this.state.selectedConsulta.tbPrescription
+        dateRecorded: this.state.selectedConsulta.dateRecorded
+     
        
         //////////////////////
        //pasfirstName: this.state.selectedPersona.pasfirstName,

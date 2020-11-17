@@ -27,7 +27,7 @@ function App(){
 
         <a path={'/App'} href={'/DiseaseComponents'} compont={DiseaseComponents} className="btn btn-outline-secondary">Enfermedades</a>
         <a path={'/App'} href={'/SpecializationsComponents'} component={SpecializationsComponents} className="btn btn-outline-secondary">Especializaciones</a>
-        <a path={'/App'} href={'/DoctorSpecialization'} compont={DoctorSpecialization} className="btn btn-outline-secondary">Doctor Specialization</a>
+        <a path={'/App'} href={'/DoctorSpecialization'} compont={DoctorSpecialization} className="btn btn-outline-secondary">Doctor Especializaciones</a>
           
 
 
