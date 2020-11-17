@@ -121,7 +121,7 @@ this.searchCountry = this.searchCountry.bind(this);
     ////
     
     axios
-    .get("http://localhost:8080/api/v1/doctors")
+    .get("http://157.230.5.231:8080/as2final-backend-0.0.1-SNAPSHOT/api/v1/doctors")
     .then((response) =>{
       console.log(response);
       this.setState({countries: response.data})

@@ -267,7 +267,7 @@ onActivoChange(e) {
                         return { doctor };
                       })}
 
-                  } optionLabel="name" placeholder="Select gender" />
+                  } optionLabel="name" placeholder="Seleccione Genero" />
 
                       
               </span>

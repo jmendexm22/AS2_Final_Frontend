@@ -298,7 +298,7 @@ export default class PacientComponents extends Component{
                         return { persona };
                     })}
 
-            } optionLabel="name" placeholder="Select gender" />
+            } optionLabel="name" placeholder="Seleccione Genero" />
 
                 <label htmlFor="gender">Genero</label>
               </span>
@@ -307,7 +307,6 @@ export default class PacientComponents extends Component{
               <br/>
               <span className="p-float-label">
 
-              <label htmlFor="birthdate">Fecha Nacimiento</label>
                 <label htmlFor=""></label>
                 <InputMask id="date" mask="9999-99-99" value={this.state.persona.birthdate} placeholder="9999-99-99" 
                 slotChar="yyyy-mm-dd" onChange={(e) => {
@@ -319,7 +318,8 @@ export default class PacientComponents extends Component{
                       return { persona };
                   })}
                 }>
-
+                    
+              <label htmlFor="birthdate">Fecha Nacimiento</label>
                 </InputMask>
 
 
